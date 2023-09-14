@@ -1,23 +1,16 @@
 package com.example.to_do;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-
-import com.example.to_do.R;
-import com.example.to_do.TaskItem;
-import com.example.to_do.TaskListAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         loadTaskListFromSharedPreferences();
+        taskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TaskItem task = taskList.get(position);
+                openEditTaskActivity(task, position);
+            }
+        });
+
+
+
+
     }
     private void saveTaskListToSharedPreferences() {
         // Serialize the taskList to a set of strings
@@ -113,9 +117,29 @@ public class MainActivity extends AppCompatActivity {
             taskAdapter.notifyDataSetChanged();
         }
     }
-
-
-
-
+    private void openEditTaskActivity(TaskItem task, int position) {
+        Intent intent = new Intent(this, EditTaskActivity.class);
+        intent.putExtra("task", task);
+        intent.putExtra("position", position);
+        startActivityForResult(intent, 1);
     }
+
+    // Handle the result from the EditTaskActivity here if needed
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            if (data != null) {
+                TaskItem updatedTask = (TaskItem) data.getSerializableExtra("updatedTask");
+                int position = data.getIntExtra("position", -1);
+                if (position != -1) {
+                    // Update the task in the list
+                    taskList.set(position, updatedTask);
+                    taskAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+}
+
 

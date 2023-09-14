@@ -1,6 +1,8 @@
 package com.example.to_do;
 
-public class TaskItem {
+import java.io.Serializable;
+
+public class TaskItem implements Serializable {
     private String title;
     private String description;
     private String priority;
