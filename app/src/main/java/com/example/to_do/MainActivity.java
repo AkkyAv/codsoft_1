@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
-    // Handle the result from the EditTaskActivity here if needed
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 TaskItem updatedTask = (TaskItem) data.getSerializableExtra("updatedTask");
                 int position = data.getIntExtra("position", -1);
                 if (position != -1) {
-                    // Update the task in the list
+
                     taskList.set(position, updatedTask);
                     taskAdapter.notifyDataSetChanged();
                 }

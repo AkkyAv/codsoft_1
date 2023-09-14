@@ -59,7 +59,7 @@ public class TaskListAdapter extends BaseAdapter {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Remove the task when the delete button is clicked
+
                 taskList.remove(position);
                 notifyDataSetChanged();
             }
